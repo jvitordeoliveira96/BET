@@ -118,6 +118,7 @@ def evaluate_pdf_marginal(prob_type, prob_parameters, vals, i):
     :return: marginal probability density evaluated at `vals`
     :rtype `numpy.ndarray`
     """
+    vals = np.atleast_1d(vals)
     if len(vals.shape) == 2:
         if vals.shape[1] == 1:
             x = vals[:, 0]

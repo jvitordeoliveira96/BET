@@ -6,7 +6,7 @@ This module contains unittests for :mod:`~bet.sampling.basicSampling:`
 
 import unittest
 import os
-import pyDOE
+import pydoe
 import numpy.testing as nptest
 import numpy as np
 import scipy.io as sio

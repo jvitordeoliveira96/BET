@@ -11,7 +11,7 @@ except ImportError:
     from distutils.core import setup
 
 setup(name='bet',
-      version='3.0.0',
+      version='3.0.1',
       description='A toolkit for data-consistent stochastic problems.',
       author='Steven Mattis',
       author_email='steve.a.mattis@gmail.com',

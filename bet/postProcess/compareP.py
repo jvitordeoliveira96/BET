@@ -271,7 +271,7 @@ class compare:
                                functional='tv', **kwargs):
         """
         Compute the  statistical distance between the marginals of the probability measures
-        by integrating using `scipy.integrate.quadrature`.. If the interval is not defined,
+        by integrating using `scipy.integrate.quad`. If the interval is not defined,
         one is computed by the maximum and minimum values. This domain is extended by the proportion
         set by `compare_factor`.
 
@@ -286,13 +286,13 @@ class compare:
         :type functional: str or a function that takes in two lists/arrays and returns
             a scalar value (measure of similarity). Accepted strings are 'tv' (total variation),
             'mink' (minkowski), '2' (Euclidean norm), 'kl' (Kullback-Leibler) and 'hell' (Hellinger distance).
-        :param kwargs: Keyword arguments for `scipy.integrate.quadrature`.
+        :param kwargs: Keyword arguments for `scipy.integrate.quad`.
 
         :rtype: float
         :returns: The statistical distance
 
         """
-        from scipy.integrate import quadrature
+        from scipy.integrate import quad  
         if interval is None:
             if self.set1.get_domain() is not None and self.set2.get_domain() is not None:
                 min1 = min(self.set1.get_domain()[i, 0], self.set1.get_domain()[i, 0])
@@ -321,20 +321,20 @@ class compare:
                           'total variation', 'total-variation', '1']:
             def error(x):
                 return np.abs(pdf1(x, i) - pdf2(x, i))
-            return 0.5 * quadrature(error, interval[0], interval[1], **kwargs)[0]
+            return 0.5 * quad(error, interval[0], interval[1], **kwargs)[0]
         elif functional in ['euclidean', '2-norm', '2']:
             def error(x):
                 return (pdf1(x, i) - pdf2(x, i))**2
-            return (quadrature(error, interval[0], interval[1], **kwargs)[0])**0.5
+            return (quad(error, interval[0], interval[1], **kwargs)[0])**0.5
         elif functional in ['norm']:
             def error(x):
                 return pdf1(x, i) - pdf2(x, i)
 
-            return quadrature(error, interval[0], interval[1], **kwargs)[0]
+            return quad(error, interval[0], interval[1], **kwargs)[0]
         elif functional in ['sqhell', 'sqhellinger']:
             def error(x):
                 return 0.5 * (np.sqrt(pdf1(x, i)) - np.sqrt(pdf2(x, i)))**2
-            return quadrature(error, interval[0], interval[1], **kwargs)[0]
+            return quad(error, interval[0], interval[1], **kwargs)[0]
         elif functional in ['hell', 'hellinger']:
             return np.sqrt(self.distance_marginal_quad(i, interval, compare_factor=0,
                                                        functional="sqhell", **kwargs))
@@ -342,8 +342,8 @@ class compare:
             def error(x):
                 return pdf1(x, i) * np.log(pdf1(x, i)/pdf2(x, i))
 
-            return quadrature(error, interval[0], interval[1], **kwargs)[0]
+            return quad(error, interval[0], interval[1], **kwargs)[0]
         else:
             def error(x):
                 return functional(pdf1(x, i), pdf2(x, i))
-            return quadrature(error, interval[0], interval[1], **kwargs)[0]
+            return quad(error, interval[0], interval[1], **kwargs)[0]

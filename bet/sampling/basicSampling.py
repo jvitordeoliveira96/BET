@@ -17,7 +17,7 @@ import glob
 import numpy as np
 import scipy.io as sio
 import scipy.stats as stats
-from pyDOE import lhs
+from pydoe import lhs
 from bet.Comm import comm
 import bet.sample as sample
 import bet.sample
